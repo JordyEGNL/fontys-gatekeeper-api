@@ -6,9 +6,6 @@ db/
 # Ignore all env files
 *.env
 
-# Ignore all config files
-*config.yaml
-
 # Ignore all log files
 *.log
 

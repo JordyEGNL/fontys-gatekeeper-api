@@ -1,0 +1,8 @@
+global:
+  debug: true
+database:
+  user: "gatekeeper-user"
+  password: "Admin01!"
+  host: "gatekeeper-advanced-db"
+  port: "3306"
+  database: "gatekeeper"
