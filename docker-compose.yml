@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  gatekeeper-advanced:
+    container_name: gatekeeper-advanced-frontend
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      DB_USERNAME: "gatekeeper-user"
+      DB_PASSWORD: "Admin01!"
+      DB_DATABASE: "gatekeeper"
+      DB_HOST: "db"
+      DB_PORT: "3306"
+    depends_on:
+      - db
+
+  db:
+    container_name: gatekeeper-advanced-db
+    image: "mysql:latest"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "gatekeeper"
+      MYSQL_USER: "gatekeeper-user"
+      MYSQL_PASSWORD: "Admin01!"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/var/lib/mysql
+    
