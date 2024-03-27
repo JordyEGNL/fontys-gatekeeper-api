@@ -20,11 +20,11 @@ jobs:
       - run: |
           docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{secrets.REPOSITORY_NAME }}:${{ github.run_number }}
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.REPOSITORY_NAME }}:${{ github.run_number }}
-      - name: 'Deploy to Azure Container Instances'
+      - name: 'Deploy API to Azure Container Instances'
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: api.${{ secrets.RESOURCE_GROUP }}
           image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ secrets.REPOSITORY_NAME }}:${{ github.run_number }}
           registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
@@ -32,3 +32,15 @@ jobs:
           name: gatekeeper-api
           location: 'west europe'
           ports: '8080'
+      - name: 'Deploy DB to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: db.${{ secrets.RESOURCE_GROUP }}
+          image: mysql:latest
+          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: gatekeeper-db
+          location: 'west europe'
+          ports: '3306'
