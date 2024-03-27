@@ -44,3 +44,13 @@ jobs:
           name: gatekeeper-db
           location: 'west europe'
           ports: '3306'
+          #These are for testing only, do not use in production
+          environment-variables: |
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root"
+            - name: MYSQL_DATABASE
+              value: "gatekeeper"
+            - name: MYSQL_USER
+              value: "gatekeeperuser"
+            - name: MYSQL_PASSWORD
+              value: "Admin01!"
