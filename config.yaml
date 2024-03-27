@@ -3,6 +3,6 @@ global:
 database:
   user: "gatekeeperuser"
   password: "Admin01!"
-  host: "gatekeeper-advanced-db"
+  host: "gatekeeper-db.mysql.database.azure.com"
   port: "3306"
   database: "gatekeeper"

@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DB_USERNAME: "gatekeeper-user"
+      DB_USERNAME: "gatekeeperuser"
       DB_PASSWORD: "Admin01!"
       DB_DATABASE: "gatekeeper"
       DB_HOST: "db"
@@ -21,7 +21,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_DATABASE: "gatekeeper"
-      MYSQL_USER: "gatekeeper-user"
+      MYSQL_USER: "gatekeeperuser"
       MYSQL_PASSWORD: "Admin01!"
     ports:
       - "3306:3306"

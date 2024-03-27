@@ -25,6 +25,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-sql-driver/mysql"
 	"gopkg.in/yaml.v3"
 )
 
@@ -363,7 +364,48 @@ func writeYaml() {
 // Function to connect to the database
 // Returns a pointer to the database
 func initializeDB() (*sql.DB, error) {
-	return nil, nil
+	cfg := mysql.Config{
+		User:                 config.Database.User,
+		Passwd:               config.Database.Password,
+		Net:                  "tcp",
+		Addr:                 config.Database.Host + ":" + config.Database.Port,
+		DBName:               config.Database.Database,
+		AllowNativePasswords: true,
+	}
+
+	// FormatDSN will return a DSN string that
+	// can be used to open a database connection
+	debug("Connection string: " + cfg.FormatDSN())
+	db, err := sql.Open("mysql", cfg.FormatDSN())
+	// Log the error if there is an error and exit the program
+	if err != nil {
+		// Retry in 5 seconds
+		time.Sleep(5 * time.Second)
+		initializeDB()
+		log.Fatalf("ERROR: Cannot connect to the database: %v", err)
+	}
+
+	// Check if the database connection is established
+	err = db.Ping()
+	if err != nil {
+		// Retry in 5 seconds
+		time.Sleep(5 * time.Second)
+		initializeDB()
+		log.Printf("ERROR: Cannot ping database: %v", err)
+	}
+	debug("Connected to the database")
+
+	// Create the table if it does not exist
+	query := `CREATE TABLE IF NOT EXISTS visitors (
+		name VARCHAR(100),
+		plate VARCHAR(10)
+	)`
+	_, err = db.Query(query)
+	if err != nil {
+		log.Fatalf("ERROR: Cannot create table: %v", err)
+	}
+
+	return db, nil
 }
 
 // First message that will be shown to the user
